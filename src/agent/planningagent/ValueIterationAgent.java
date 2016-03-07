@@ -1,12 +1,15 @@
 package agent.planningagent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import util.HashMapUtil;
 import environnement.Action;
 import environnement.Etat;
+import environnement.IllegalActionException;
 import environnement.MDP;
 import environnement.gridworld.ActionGridworld;
 
@@ -22,6 +25,8 @@ public class ValueIterationAgent extends PlanningValueAgent{
 	 * discount facteur
 	 */
 	protected double gamma;
+	protected Map<Etat,Double> carteValeur = new HashMap<Etat,Double>();
+	
 	//*** VOTRE CODE
 
 
@@ -34,6 +39,9 @@ public class ValueIterationAgent extends PlanningValueAgent{
 	public ValueIterationAgent(double gamma,MDP mdp) {
 		super(mdp);
 		this.gamma = gamma;
+		for(Etat e : mdp.getEtatsAccessibles()){
+			carteValeur.put(e,0.);
+		}
 		//*** VOTRE CODE
 	
 	
@@ -42,7 +50,6 @@ public class ValueIterationAgent extends PlanningValueAgent{
 	
 	public ValueIterationAgent(MDP mdp) {
 		this(0.9,mdp);
-
 	}
 	
 	/**
@@ -75,25 +82,50 @@ public class ValueIterationAgent extends PlanningValueAgent{
 	 */
 	@Override
 	public Action getAction(Etat e) {
-		//*** VOTRE CODE
+
+		int numAction;
 		
+		List<Action> listeAction = getPolitique(e);
+		Random rand = new Random();
+		try{
+			numAction = rand.nextInt(listeAction.size());				
+		}catch(IllegalArgumentException except)
+		{
+			return null;
+		}
+		return listeAction.get(numAction);
 	
-		return null;
 	}
+	
 	@Override
 	public double getValeur(Etat _e) {
-		//*** VOTRE CODE
 		
-		return 0.0;
+		
+		return carteValeur.get(_e);
+		
 	}
 	/**
-	 * renvoi la (les) action(s) de plus forte(s) valeur(s) dans l'etat e 
-	 * (plusieurs actions sont renvoyees si valeurs identiques, liste vide si aucune action n'est possible)
+	 * renvoie la (les) action(s) de plus forte(s) valeur(s) dans l'etat e 
+	 * (plusieurs actions sont renvoyes si valeurs identiques, liste vide si aucune action n'est possible)
 	 */
 	@Override
 	public List<Action> getPolitique(Etat _e) {
 		List<Action> l = new ArrayList<Action>();
-		//*** VOTRE CODE
+		double valMax = Double.MIN_VALUE;
+		List<Action> meilleuresActions = new ArrayList<Action>();
+		
+		for(Action a : l){
+			try {
+				Map<Etat,Double> carteProba = mdp.getEtatTransitionProba(_e, a);
+			} catch (IllegalActionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//for(Etat etat : carteProba){
+		}
 		
 		
 		return l;
