@@ -17,6 +17,7 @@ public class testRandomAgent {
 				public void run(){
 		
 					GridworldMDP gmdp = GridworldMDP.getBookGrid();
+					//GridworldMDP gmdp = GridworldMDP.getDiscountGrid();
 					
 					GridworldEnvironnement g = new GridworldEnvironnement(gmdp);
 					GridworldEnvironnement.setDISP(true);//affichage transitions
