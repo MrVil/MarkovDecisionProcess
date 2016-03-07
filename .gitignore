@@ -7,7 +7,6 @@ testTP1MDP.iml
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
