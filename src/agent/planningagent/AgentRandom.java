@@ -24,10 +24,17 @@ public class AgentRandom extends PlanningValueAgent{
 	@Override
 	public Action getAction(Etat e) {
 		
+		int numAction;
+		
 		List<Action> listeAction = getPolitique(e);
 		Random rand = new Random();
-		int i = rand.nextInt(listeAction.size());				
-		return listeAction.get(i);
+		try{
+			numAction = rand.nextInt(listeAction.size());				
+		}catch(IllegalArgumentException except)
+		{
+			return null;
+		}
+		return listeAction.get(numAction);
 		
 	}
 
@@ -45,8 +52,6 @@ public class AgentRandom extends PlanningValueAgent{
 		//*** VOTRE CODE
 		
 		List<Action> actionsPossibles = mdp.getActionsPossibles(_e);
-		
-		
 		return actionsPossibles;
 	}
 
