@@ -115,7 +115,6 @@ public class ValueIterationAgent extends PlanningValueAgent{
 	}
 
 
-	@Override
 	public void setGamma(double arg0) {
 		this.gamma = arg0;
 	}

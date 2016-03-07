@@ -3,6 +3,7 @@ package agent.planningagent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import environnement.Action;
 import environnement.Etat;
@@ -22,11 +23,11 @@ public class AgentRandom extends PlanningValueAgent{
 
 	@Override
 	public Action getAction(Etat e) {
-		//*** VOTRE CODE
 		
-		
-		
-		return null;
+		List<Action> listeAction = getPolitique(e);
+		Random rand = new Random();
+		int i = rand.nextInt(listeAction.size());				
+		return listeAction.get(i);
 		
 	}
 
@@ -43,7 +44,10 @@ public class AgentRandom extends PlanningValueAgent{
 	public List<Action> getPolitique(Etat _e) {
 		//*** VOTRE CODE
 		
-		return null;
+		List<Action> actionsPossibles = mdp.getActionsPossibles(_e);
+		
+		
+		return actionsPossibles;
 	}
 
 	@Override
@@ -51,7 +55,6 @@ public class AgentRandom extends PlanningValueAgent{
 		System.out.println("l'agent random ne planifie pas");
 	}
 
-	@Override
 	public void setGamma(double parseDouble) {
 		// TODO Auto-generated method stub
 		
