@@ -25,7 +25,11 @@ public class ValueIterationAgent extends PlanningValueAgent{
 	 * discount facteur
 	 */
 	protected double gamma;
-	protected Map<Etat,Double> carteValeur = new HashMap<Etat,Double>();
+	protected Map<Etat,Double> carteValeur = new HashMap<>();
+
+	public static final double POINTS_BUT = 1.;
+	public static final double POINTS_ABSORBANTS = -1.;
+	public static final double POINTS_INITIAUX = 0.;
 	
 	//*** VOTRE CODE
 
@@ -40,11 +44,13 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		super(mdp);
 		this.gamma = gamma;
 		for(Etat e : mdp.getEtatsAccessibles()){
-			carteValeur.put(e,0.);
+			if(mdp.estAbsorbant(e))
+				carteValeur.put(e,POINTS_ABSORBANTS);
+			else if(mdp.estBut(e))
+				carteValeur.put(e,POINTS_BUT);
+			else
+				carteValeur.put(e,POINTS_INITIAUX);
 		}
-		//*** VOTRE CODE
-	
-	
 	}
 	
 	
@@ -88,7 +94,7 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		List<Action> listeAction = getPolitique(e);
 		Random rand = new Random();
 		try{
-			numAction = rand.nextInt(listeAction.size());				
+			numAction = rand.nextInt(listeAction.size());
 		}catch(IllegalArgumentException except)
 		{
 			return null;
