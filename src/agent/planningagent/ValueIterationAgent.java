@@ -44,12 +44,7 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		super(mdp);
 		this.gamma = gamma;
 		for(Etat e : mdp.getEtatsAccessibles()){
-			if(mdp.estAbsorbant(e))
-				carteValeur.put(e,POINTS_ABSORBANTS);
-			else if(mdp.estBut(e))
-				carteValeur.put(e,POINTS_BUT);
-			else
-				carteValeur.put(e,POINTS_INITIAUX);
+			carteValeur.put(e,POINTS_INITIAUX);
 		}
 	}
 	
