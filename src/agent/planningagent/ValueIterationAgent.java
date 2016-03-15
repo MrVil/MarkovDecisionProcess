@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import util.HashMapUtil;
 import environnement.Action;
@@ -64,8 +65,27 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		//delta < epsilon 
 		this.delta=0.0;
 		//*** VOTRE CODE
-		
 	
+		/*Etat init = mdp.getEtatInit();
+		Etat etatActuel = init;
+		
+		while(!mdp.estBut(etatActuel)){
+			mdp.getActionsPossibles(etatActuel);
+		
+		}*/
+		
+		for (Etat e : mdp.getEtatsAccessibles()) {
+			double value = Double.MIN_VALUE;
+			Map<Etat, Double> transition = null;
+			for(Action a : mdp.getActionsPossibles(e)) {
+				transition = mdp.getEtatTransitionProba(e, a);
+				Set<Etat> k = transition.keySet();
+				
+				value = transition.get() * (mdp.getRecompense(e, a, next) + this.gamma * carteValeur.get(e));
+			}
+		}
+		
+		
 		
 		
 		// mise a jour vmax et vmin pour affichage du gradient de couleur:
@@ -113,11 +133,12 @@ public class ValueIterationAgent extends PlanningValueAgent{
 	public List<Action> getPolitique(Etat _e) {
 		List<Action> l = new ArrayList<Action>();
 		double valMax = Double.MIN_VALUE;
-		List<Action> meilleuresActions = new ArrayList<Action>();
+		List<Action> meilleuresActions = mdp.getActionsPossibles(_e);
 		
 		for(Action a : l){
 			try {
 				Map<Etat,Double> carteProba = mdp.getEtatTransitionProba(_e, a);
+				
 			} catch (IllegalActionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
