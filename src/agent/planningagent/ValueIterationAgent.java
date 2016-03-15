@@ -78,11 +78,22 @@ public class ValueIterationAgent extends PlanningValueAgent{
 			double value = Double.MIN_VALUE;
 			Map<Etat, Double> transition = null;
 			for(Action a : mdp.getActionsPossibles(e)) {
-				transition = mdp.getEtatTransitionProba(e, a);
+				try {
+					transition = mdp.getEtatTransitionProba(e, a);
+				} catch (IllegalActionException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				Set<Etat> k = transition.keySet();
-				
-				value = transition.get() * (mdp.getRecompense(e, a, next) + this.gamma * carteValeur.get(e));
-			}
+				for(Etat next : k){
+					double val1 = transition.get(next) * (mdp.getRecompense(e, a, next) + this.gamma * carteValeur.get(e));
+					if(value<val1){
+					value = val1;
+				}
+				}
 		}
 		
 		
