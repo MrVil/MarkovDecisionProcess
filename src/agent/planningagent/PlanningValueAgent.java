@@ -16,10 +16,10 @@ public abstract class PlanningValueAgent extends ValueAgent implements IPlanning
 	 * difference max entre 2 mises a jour de V(s) (utile dans run pour convergence)
 	 */
 	protected double delta;
-	
-	
-	
-	
+
+
+
+
 	
 	public PlanningValueAgent(MDP mdp) {
 		super();
@@ -60,9 +60,9 @@ public abstract class PlanningValueAgent extends ValueAgent implements IPlanning
 	 * 
 	 */
 	public abstract void updateV();
-	
-	
-	
+
+
+
 
 	public void setDelta(double delta) {
 		this.delta = delta;
