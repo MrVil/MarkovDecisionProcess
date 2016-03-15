@@ -17,10 +17,6 @@ public abstract class PlanningValueAgent extends ValueAgent implements IPlanning
 	 */
 	protected double delta;
 
-
-
-
-	
 	public PlanningValueAgent(MDP mdp) {
 		super();
 		this.mdp = mdp;
@@ -60,9 +56,9 @@ public abstract class PlanningValueAgent extends ValueAgent implements IPlanning
 	 * 
 	 */
 	public abstract void updateV();
-
-
-
+	
+	
+	
 
 	public void setDelta(double delta) {
 		this.delta = delta;
