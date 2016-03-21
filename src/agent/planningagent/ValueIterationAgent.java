@@ -2,7 +2,6 @@ package agent.planningagent;
 
 import environnement.Action;
 import environnement.Etat;
-import environnement.IllegalActionException;
 import environnement.MDP;
 
 import java.util.*;
@@ -56,9 +55,8 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		//delta est utilise pour detecter la convergence de l'algorithme
 		//lorsque l'on planifie jusqu'a convergence, on arrete les iterations lorsque
 		//delta < epsilon
-
+        double tmpdelta = 0.;
         Map<Etat, Double> carteValeurTemp = new HashMap<>(carteValeur);
-		this.delta = 0.0;
 		//*** VOTRE CODE
 		for (Etat e : mdp.getEtatsAccessibles()) {
             double value = - Double.MAX_VALUE;
@@ -78,7 +76,10 @@ public class ValueIterationAgent extends PlanningValueAgent{
 			}
             if(!(mdp.estAbsorbant(e)))
                 carteValeur.put(e,value);
+            if(Math.abs(carteValeurTemp.get(e) - carteValeur.get(e)) > tmpdelta)
+                tmpdelta = Math.abs(carteValeurTemp.get(e) - carteValeur.get(e));
 		}
+        this.delta = tmpdelta;
         // mise a jour vmax et vmin pour affichage du gradient de couleur:
         //vmax est la valeur de max pour tout s de V
         //vmin est la valeur de min pour tout s de V
