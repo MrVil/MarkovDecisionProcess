@@ -121,24 +121,26 @@ public class ValueIterationAgent extends PlanningValueAgent{
 	@Override
 	public List<Action> getPolitique(Etat _e) {
 		List<Action> l = new ArrayList<Action>();
-		double valMax = Double.MIN_VALUE;
+		double valMax = -Double.MAX_VALUE;
 		List<Action> meilleuresActions = mdp.getActionsPossibles(_e);
-		
-		for(Action a : l){
+		for (Action action : meilleuresActions) {
 			try {
-				Map<Etat,Double> carteProba = mdp.getEtatTransitionProba(_e, a);
-				
-			} catch (IllegalActionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Map<Etat, Double> transition = mdp.getEtatTransitionProba(_e,action);
+				Set<Etat> k = transition.keySet();
+				for (Etat etat : k) {
+					double val = carteValeur.get(etat);
+					if(val>valMax){
+						l = new ArrayList<Action>();
+						l.add(action);
+					}else if(val == valMax){
+						l.add(action);
+					}
+				}
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			//for(Etat etat : carteProba){
 		}
-		
-		
+
 		return l;
 		
 	}
