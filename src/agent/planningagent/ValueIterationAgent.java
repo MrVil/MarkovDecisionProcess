@@ -1,18 +1,11 @@
 package agent.planningagent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-
-import util.HashMapUtil;
 import environnement.Action;
 import environnement.Etat;
 import environnement.IllegalActionException;
 import environnement.MDP;
-import environnement.gridworld.ActionGridworld;
+
+import java.util.*;
 
 
 /**
@@ -59,11 +52,11 @@ public class ValueIterationAgent extends PlanningValueAgent{
 	 * Mise a jour de V: effectue UNE iteration de value iteration 
 	 */
 	@Override
-	public void updateV(){
+	public void updateV() {
 		//delta est utilise pour detecter la convergence de l'algorithme
 		//lorsque l'on planifie jusqu'a convergence, on arrete les iterations lorsque
 		//delta < epsilon 
-		this.delta=0.0;
+		this.delta = 0.0;
 		//*** VOTRE CODE
 	
 		/*Etat init = mdp.getEtatInit();
@@ -73,11 +66,11 @@ public class ValueIterationAgent extends PlanningValueAgent{
 			mdp.getActionsPossibles(etatActuel);
 		
 		}*/
-		
+
 		for (Etat e : mdp.getEtatsAccessibles()) {
 			double value = Double.MIN_VALUE;
 			Map<Etat, Double> transition = null;
-			for(Action a : mdp.getActionsPossibles(e)) {
+			for (Action a : mdp.getActionsPossibles(e)) {
 				try {
 					transition = mdp.getEtatTransitionProba(e, a);
 				} catch (IllegalActionException e1) {
@@ -88,26 +81,24 @@ public class ValueIterationAgent extends PlanningValueAgent{
 					e1.printStackTrace();
 				}
 				Set<Etat> k = transition.keySet();
-				for(Etat next : k){
+				for (Etat next : k) {
 					double val1 = transition.get(next) * (mdp.getRecompense(e, a, next) + this.gamma * carteValeur.get(e));
-					if(value<val1){
-					value = val1;
+					if (value < val1) {
+						value = val1;
+					}
 				}
-				}
+			}
+
+
+			// mise a jour vmax et vmin pour affichage du gradient de couleur:
+			//vmax est la valeur de max pour tout s de V
+			//vmin est la valeur de min pour tout s de V
+			// ...
+
+			//******************* a laisser a la fin de la methode
+			this.notifyObs();
 		}
-		
-		
-		
-		
-		// mise a jour vmax et vmin pour affichage du gradient de couleur:
-		//vmax est la valeur de max pour tout s de V
-		//vmin est la valeur de min pour tout s de V
-		// ...
-		
-		//******************* a laisser a la fin de la methode
-		this.notifyObs();
 	}
-	
 	
 	/**
 	 * renvoi l'action executee par l'agent dans l'etat e 
