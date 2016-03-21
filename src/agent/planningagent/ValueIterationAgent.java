@@ -58,46 +58,35 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		//delta < epsilon 
 		this.delta = 0.0;
 		//*** VOTRE CODE
-	
-		/*Etat init = mdp.getEtatInit();
-		Etat etatActuel = init;
-		
-		while(!mdp.estBut(etatActuel)){
-			mdp.getActionsPossibles(etatActuel);
-		
-		}*/
-
 		for (Etat e : mdp.getEtatsAccessibles()) {
-			double value = Double.MIN_VALUE;
+            System.out.println("> Etat :"+e.toString());
+            double value = - Double.MAX_VALUE;
 			Map<Etat, Double> transition = null;
 			for (Action a : mdp.getActionsPossibles(e)) {
-				try {
+                System.out.println("--> Action :"+a.toString());
+                try {
 					transition = mdp.getEtatTransitionProba(e, a);
-				} catch (IllegalActionException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+                    System.out.println("--> Transition"+transition.toString());
+                } catch (Exception e1) {e1.printStackTrace();}
 				Set<Etat> k = transition.keySet();
+                double sum = 0;
 				for (Etat next : k) {
-					double val1 = transition.get(next) * (mdp.getRecompense(e, a, next) + this.gamma * carteValeur.get(e));
-					if (value < val1) {
-						value = val1;
-					}
+                    System.out.println("----> Next :"+k.toString());
+                    sum += transition.get(next) * (mdp.getRecompense(e, a, next) + this.gamma * carteValeur.get(e));
 				}
+                if (value < sum) {
+                    value = sum;
+                }
 			}
-
-
-			// mise a jour vmax et vmin pour affichage du gradient de couleur:
-			//vmax est la valeur de max pour tout s de V
-			//vmin est la valeur de min pour tout s de V
-			// ...
-
-			//******************* a laisser a la fin de la methode
-			this.notifyObs();
+            carteValeur.put(e,value);
 		}
+        // mise a jour vmax et vmin pour affichage du gradient de couleur:
+        //vmax est la valeur de max pour tout s de V
+        //vmin est la valeur de min pour tout s de V
+        // ...
+
+        //******************* a laisser a la fin de la methode
+        this.notifyObs();
 	}
 	
 	/**
@@ -123,9 +112,9 @@ public class ValueIterationAgent extends PlanningValueAgent{
 	@Override
 	public double getValeur(Etat _e) {
 		
-		
-		return carteValeur.get(_e);
-		
+		if(carteValeur.containsKey(_e))
+		    return carteValeur.get(_e);
+		return 0;
 	}
 	/**
 	 * renvoie la (les) action(s) de plus forte(s) valeur(s) dans l'etat e 
