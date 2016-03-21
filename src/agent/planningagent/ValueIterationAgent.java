@@ -56,6 +56,7 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		//delta est utilise pour detecter la convergence de l'algorithme
 		//lorsque l'on planifie jusqu'a convergence, on arrete les iterations lorsque
 		//delta < epsilon
+
         Map<Etat, Double> carteValeurTemp = new HashMap<>(carteValeur);
 		this.delta = 0.0;
 		//*** VOTRE CODE
@@ -125,16 +126,30 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		List<Action> l = new ArrayList<Action>();
 		double valMax = -Double.MAX_VALUE;
 		List<Action> meilleuresActions = mdp.getActionsPossibles(_e);
+		System.out.println("->Etat : " + _e.toString());
 		for (Action action : meilleuresActions) {
 			try {
+				System.out.println("--> Action : " + action.toString() );
 				Map<Etat, Double> transition = mdp.getEtatTransitionProba(_e,action);
 				Set<Etat> k = transition.keySet();
 				for (Etat etat : k) {
 					double val = carteValeur.get(etat);
-					if(val>valMax){
-						l = new ArrayList<Action>();
+					double probaXVal = transition.get(etat)*val;
+					System.out.println("---->Valeur de la case " + etat + " : " + val);
+					if(mdp.estAbsorbant(etat)){
+
+					}
+					if(mdp.getRecompense(_e,action,etat) == mdp.getRecompenseMax()){
+						l = new ArrayList<>();
 						l.add(action);
-					}else if(val == valMax){
+						valMax = Double.MAX_VALUE;
+						break;
+					}
+					if(probaXVal>valMax){
+						valMax = probaXVal;
+						l = new ArrayList<>();
+						l.add(action);
+					}else if(probaXVal == valMax){
 						l.add(action);
 					}
 				}
