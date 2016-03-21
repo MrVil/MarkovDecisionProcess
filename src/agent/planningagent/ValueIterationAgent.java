@@ -55,30 +55,30 @@ public class ValueIterationAgent extends PlanningValueAgent{
 	public void updateV() {
 		//delta est utilise pour detecter la convergence de l'algorithme
 		//lorsque l'on planifie jusqu'a convergence, on arrete les iterations lorsque
-		//delta < epsilon 
+		//delta < epsilon
+        Map<Etat, Double> carteValeurTemp = new HashMap<>(carteValeur);
 		this.delta = 0.0;
 		//*** VOTRE CODE
 		for (Etat e : mdp.getEtatsAccessibles()) {
-            System.out.println("> Etat :"+e.toString());
             double value = - Double.MAX_VALUE;
 			Map<Etat, Double> transition = null;
 			for (Action a : mdp.getActionsPossibles(e)) {
-                System.out.println("--> Action :"+a.toString());
                 try {
 					transition = mdp.getEtatTransitionProba(e, a);
-                    System.out.println("--> Transition"+transition.toString());
                 } catch (Exception e1) {e1.printStackTrace();}
 				Set<Etat> k = transition.keySet();
                 double sum = 0;
 				for (Etat next : k) {
-                    System.out.println("----> Next :"+k.toString());
-                    sum += transition.get(next) * (mdp.getRecompense(e, a, next) + this.gamma * carteValeur.get(e));
-				}
+                    sum += transition.get(next) * (mdp.getRecompense(e, a, next) + this.gamma * carteValeurTemp.get(next));
+                    System.out.println("----> Somme :"+sum);
+                }
                 if (value < sum) {
                     value = sum;
                 }
 			}
-            carteValeur.put(e,value);
+            if(!(mdp.estAbsorbant(e)))
+                carteValeur.put(e,value);
+            System.out.println("CARTE VALEUR "+carteValeur.get(e));
 		}
         // mise a jour vmax et vmin pour affichage du gradient de couleur:
         //vmax est la valeur de max pour tout s de V
