@@ -70,7 +70,6 @@ public class ValueIterationAgent extends PlanningValueAgent{
                 double sum = 0;
 				for (Etat next : k) {
                     sum += transition.get(next) * (mdp.getRecompense(e, a, next) + this.gamma * carteValeurTemp.get(next));
-                    System.out.println("----> Somme :"+sum);
                 }
                 if (value < sum) {
                     value = sum;
@@ -78,7 +77,6 @@ public class ValueIterationAgent extends PlanningValueAgent{
 			}
             if(!(mdp.estAbsorbant(e)))
                 carteValeur.put(e,value);
-            System.out.println("CARTE VALEUR "+carteValeur.get(e));
 		}
         // mise a jour vmax et vmin pour affichage du gradient de couleur:
         //vmax est la valeur de max pour tout s de V
