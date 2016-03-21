@@ -70,6 +70,12 @@ public class ValueIterationAgent extends PlanningValueAgent{
 				for (Etat next : k) {
                     sum += transition.get(next) * (mdp.getRecompense(e, a, next) + this.gamma * carteValeurTemp.get(next));
                 }
+				if(sum>this.vmax){
+					this.vmax = sum;
+				}
+				if(sum<this.vmin){
+					this.vmin = sum;
+				}
                 if (value < sum) {
                     value = sum;
                 }
@@ -125,20 +131,20 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		List<Action> l = new ArrayList<Action>();
 		double valMax = -Double.MAX_VALUE;
 		List<Action> meilleuresActions = mdp.getActionsPossibles(_e);
-		System.out.println("->Etat : " + _e.toString());
 		for (Action action : meilleuresActions) {
 			try {
-				System.out.println("--> Action : " + action.toString() );
 				Map<Etat, Double> transition = mdp.getEtatTransitionProba(_e,action);
 				Set<Etat> k = transition.keySet();
 				for (Etat etat : k) {
 					double val = carteValeur.get(etat);
 					double probaXVal = transition.get(etat)*val;
-					System.out.println("---->Valeur de la case " + etat + " : " + val);
-					if(mdp.estAbsorbant(etat)){
-
+					double probaTransiMax = -Double.MAX_VALUE;
+					for(Etat etat2 : k){
+						if(transition.get(etat2) > probaTransiMax){
+							probaTransiMax = transition.get(etat2);
+						}
 					}
-					if(mdp.getRecompense(_e,action,etat) == mdp.getRecompenseMax()){
+					if(mdp.getRecompense(_e,action,etat) == mdp.getRecompenseMax() && probaTransiMax == transition.get(etat)){
 						l = new ArrayList<>();
 						l.add(action);
 						valMax = Double.MAX_VALUE;
