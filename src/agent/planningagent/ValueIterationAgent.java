@@ -73,7 +73,7 @@ public class ValueIterationAgent extends PlanningValueAgent{
 			mdp.getActionsPossibles(etatActuel);
 		
 		}*/
-		
+
 		for (Etat e : mdp.getEtatsAccessibles()) {
 			double value = Double.MIN_VALUE;
 			Map<Etat, Double> transition = null;
@@ -95,18 +95,19 @@ public class ValueIterationAgent extends PlanningValueAgent{
 				}
 				}
 		}
-		
-		
-		
-		
+
+
+
+
 		// mise a jour vmax et vmin pour affichage du gradient de couleur:
 		//vmax est la valeur de max pour tout s de V
 		//vmin est la valeur de min pour tout s de V
 		// ...
-		
+
 		//******************* a laisser a la fin de la methode
 		this.notifyObs();
 	}
+
 	
 	
 	/**
@@ -184,5 +185,5 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		this.gamma = arg0;
 	}
 
-	
+
 }
