@@ -195,10 +195,7 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		super.reset();
 		//*** VOTRE CODE
 		
-		
-		
-		
-		
+		//carteValeur = new HashMap<>();
 		/*-----------------*/
 		this.notifyObs();
 
